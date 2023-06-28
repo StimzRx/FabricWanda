@@ -3,13 +3,13 @@
 	"id": "wanda",
 	"version": "${version}",
 	"name": "Wanda",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A fabric server-side point selection wand API",
 	"authors": [
 		"VenomCodeDev"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/VenomCodeDev/FabricWanda",
+		"sources": "https://github.com/VenomCodeDev/FabricWanda"
 	},
 	"license": "MIT",
 	"icon": "assets/wanda/icon.png",
