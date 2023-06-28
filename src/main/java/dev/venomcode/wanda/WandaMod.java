@@ -2,10 +2,13 @@ package dev.venomcode.wanda;
 
 import dev.venomcode.serverapi.api.ServerAPI;
 import dev.venomcode.serverapi.api.ServerUtils;
+import dev.venomcode.serverapi.commands.server.ServerCommand;
 import dev.venomcode.wanda.api.IWandaPlayer;
+import dev.venomcode.wanda.commands.WandCommand;
 import dev.venomcode.wanda.configs.WandaConfig;
 import dev.venomcode.wanda.items.WandItem;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
@@ -15,6 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -52,15 +56,25 @@ public class WandaMod implements ModInitializer {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
                 IWandaPlayer wandaPlayer = (IWandaPlayer) serverPlayer;
 
-                wandaPlayer.setSelected(pos, true);
+                BlockPos sel = wandaPlayer.getSelectedPrimary();
+                if(sel == null || !sel.equals(pos))
+                {
+                    wandaPlayer.setSelected(pos, true);
 
-                serverPlayer.sendMessage(ServerUtils.getText("[Wanda] Set PRIMARY selection to " + pos.toShortString(), Formatting.GOLD));
+                    serverPlayer.sendMessage(ServerUtils.getText("[Wanda] Set PRIMARY selection to " + pos.toShortString(), Formatting.GOLD));
+                }
+
                 return ActionResult.SUCCESS;
             }
             return ActionResult.PASS;
         }));
 
+        CommandRegistrationCallback.EVENT.register( (dispatcher, registryAccess, registrationEnvironment) -> {
+            WandCommand.register(dispatcher);
+        });
     }
+
+    public static WandItem WAND_ITEM;
 
     public static WandaConfig getConfig() {
         if(_configCached != null)
@@ -88,8 +102,6 @@ public class WandaMod implements ModInitializer {
             LOGGER.error(ServerAPI.Logger.Error("[ERROR]Failed to save wanda config."));
         }
     }
-
-    public WandItem WAND_ITEM;
 
     private static final HoconConfigurationLoader configLoader = HoconConfigurationLoader.builder()
             .path(Path.of(ServerAPI.CONFIG_PATH + "wanda.conf"))

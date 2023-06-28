@@ -27,9 +27,13 @@ public class WandItem extends SimplePolymerItem {
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) context.getPlayer();
         IWandaPlayer wandaPlayer = (IWandaPlayer)serverPlayer;
 
-        wandaPlayer.setSelected(context.getBlockPos(), false);
+        BlockPos sel = wandaPlayer.getSelectedSecondary();
+        if(sel == null || !sel.equals(context.getBlockPos()))
+        {
+            wandaPlayer.setSelected(context.getBlockPos(), false);
 
-        serverPlayer.sendMessage(ServerUtils.getText("[Wanda] Set SECONDARY selection to " + context.getBlockPos().toShortString(), Formatting.GOLD));
+            serverPlayer.sendMessage(ServerUtils.getText("[Wanda] Set SECONDARY selection to " + context.getBlockPos().toShortString(), Formatting.GOLD));
+        }
 
 
         return ActionResult.PASS;

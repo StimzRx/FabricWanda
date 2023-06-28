@@ -11,7 +11,7 @@ public class WandaAPI {
     /**
      * Gets a players selection in BlockPos format as a pair of PRIMARY, SECONDARY
      */
-    public Pair<BlockPos, BlockPos> getPlayerSelection(ServerPlayerEntity serverPlayer) {
+    public static Pair<BlockPos, BlockPos> getPlayerSelection(ServerPlayerEntity serverPlayer) {
         IWandaPlayer wandaPlayer = (IWandaPlayer) serverPlayer;
         return new Pair<>(wandaPlayer.getSelectedPrimary(), wandaPlayer.getSelectedSecondary());
     }
