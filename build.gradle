@@ -35,8 +35,8 @@ dependencies {
 
 	include(modImplementation('me.lucko:fabric-permissions-api:0.2-SNAPSHOT'))
 
-	modImplementation include("eu.pb4:polymer-core:${project.polymer_version}")
-	modImplementation include("xyz.nucleoid:server-translations-api:${project.server_translations_api_version}")
+	include(modImplementation("eu.pb4:polymer-core:${project.polymer_version}"))
+	include(modImplementation("xyz.nucleoid:server-translations-api:${project.server_translations_api_version}"))
 }
 
 processResources {
